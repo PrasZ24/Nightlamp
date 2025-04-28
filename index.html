@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Night Lamp</title>
+        <link rel="manifest" href="manifest.json">
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('sw.js').then(function(registration) {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    }, function(err) {
+                        console.log('Service Worker registration failed:', err);
+                    });
+                });
+            }
+        </script>
+        <style>
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #title1 {
+                font-size: calc(5vw + 1vh);
+                font-weight: 800;
+                margin: calc(0.8vw + 1vh);
+                margin-top: 0vw;
+                margin-bottom: calc(0.2vw + 0.8vh);
+            }
+            #title2 {
+                font-size: calc(1vw + 1vh);
+                font-style: italic;
+                margin: calc(0.8vw + 1vh);  
+                margin-top: 0vw;
+            }
+            .alarm {
+                border: calc(0.05vw + 0.1vh) solid black;
+                display: flex;
+                flex-direction: column;
+            }
+            #title_alarm {
+                font-size: calc(1vw + 1vh);
+                margin: calc(0.1vw + 0.1vh);
+                margin-bottom: 0.2vw;
+            }
+            .container_1, .container_2{
+                display: flex;
+                align-items: center;
+            }
+            .container_2{
+                display: flex;
+                align-items: center;
+                justify-items: center;
+                height:calc(5vw + 1vh);
+                margin: calc(0.1vw + 1vh);
+            }
+            #garis1 {
+                margin: 0vh;
+                margin-bottom: calc(1vw + 1vh);
+                border: calc(0.1vw + 0.2vh) solid black;
+                width: calc(5vw + 4.5vh);
+            }
+            #checkbox1 {
+                height: calc(1vw + 2vh);
+                width: calc(1vw + 2vh);
+            }
+            #input_hour, #input_minute {
+                font-size: calc(3vw + 2vh);
+                width: calc(4vw + 2vh);
+                height: calc(3vw + 2vh);
+                background-color: rgb(255, 255, 255);
+                border: 0vw solid ;
+                margin-left: calc(0.5vw + 0.2vh);
+            }
+            #colon {
+                align-self: center;
+                font-size: calc(3vw + 2vh);
+                color: gray;    
+            }
+            #button_okAlarm {
+                font-size: calc(1vw + 1vh);
+                height: calc(2vw + 1vh);
+                width: calc(5vw + 2vh);
+                margin: calc(0.1vw + 0.1vh);
+                display: none;
+
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            <div class="title">
+                <h1 id="title1">Settings</h1>
+                <h2 id="title2">Night Lamp V.1.0</h2>
+            </div>
+            <div class="alarm">
+                <h1 id="title_alarm">⏰Alarm</h1>
+                <hr id="garis1">
+                <div class="container_1">
+                    <input type="checkbox" id="checkbox1">
+                    <p id="title_alarm">Alarm 1</p>
+                </div>
+                <div class="container_2">
+                    <input type="number" value="00" id="input_hour" max="24" min="0" disabled>
+                    <h1 id="colon">:</h1>
+                    <input type="number" value="00" id="input_minute" max="60" min="0" disabled>
+                </div>
+                <button id="button_okAlarm">OK</button>
+            </div>
+        </div>
+        <script>
+            document.getElementById('checkbox1').addEventListener('change', function(){
+                var inputH = document.getElementById("input_hour");
+                var inputM = document.getElementById("input_minute");
+                var colon = document.getElementById("colon");
+                var button_okAlarm = document.getElementById("button_okAlarm");
+
+                if (document.getElementById('checkbox1').checked) {
+                    button_okAlarm.style.display = 'block';
+                    colon.style.color = "black"
+                    inputH.disabled = false;
+                    inputH.value = '00'; 
+                    inputM.disabled = false;
+                    inputM.value = '00'; 
+                } else {
+                    button_okAlarm.style.display = 'none';
+                    colon.style.color = "gray"
+                    inputH.disabled = true;
+                    inputH.value = '00';
+                    inputM.disabled = true;
+                    inputM.value = '00';  
+                }
+            });
+        </script>
+    </body>
+</html>
