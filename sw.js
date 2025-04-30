@@ -5,10 +5,10 @@ self.addEventListener('install', (e) => {
     e.waitUntil(
       caches.open('nightlamp-cache').then((cache) => {
         return cache.addAll([
-          './index.html',
-          './manifest.json',
-          './image.png',
-          './image2.png'
+          '/index.html',
+          '/manifest.json',
+          '/image.png',
+          '/image2.png'
         ]);
       })
     );
@@ -22,4 +22,13 @@ self.addEventListener('install', (e) => {
       })
     );
   });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('Service Worker registered!', reg))
+        .catch(err => console.log('Service Worker registration failed:', err));
+    });
+  }
+  
   
