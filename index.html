@@ -1,134 +1,905 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Night Lamp</title>
-        <link rel="manifest" href="manifest.json">
-        <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('sw.js').then(function(registration) {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                    }, function(err) {
-                        console.log('Service Worker registration failed:', err);
-                    });
+<head>
+    <title>Night Lamp</title>
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('sw.js').then(function (registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }, function (err) {
+                    console.log('Service Worker registration failed:', err);
                 });
-            }
-        </script>
-        <style>
-            body{
-                font-family: Arial, Helvetica, sans-serif;
-            }
-            #title1 {
-                font-size: calc(5vw + 1vh);
-                font-weight: 800;
-                margin: calc(0.8vw + 1vh);
-                margin-top: 0vw;
-                margin-bottom: calc(0.2vw + 0.8vh);
-            }
-            #title2 {
-                font-size: calc(1vw + 1vh);
-                font-style: italic;
-                margin: calc(0.8vw + 1vh);  
-                margin-top: 0vw;
-            }
-            .alarm {
-                border: calc(0.05vw + 0.1vh) solid black;
-                display: flex;
-                flex-direction: column;
-            }
-            #title_alarm {
-                font-size: calc(1vw + 1vh);
-                margin: calc(0.1vw + 0.1vh);
-                margin-bottom: 0.2vw;
-            }
-            .container_1, .container_2{
-                display: flex;
-                align-items: center;
-            }
-            .container_2{
-                display: flex;
-                align-items: center;
-                justify-items: center;
-                height:calc(5vw + 1vh);
-                margin: calc(0.1vw + 1vh);
-            }
-            #garis1 {
-                margin: 0vh;
-                margin-bottom: calc(1vw + 1vh);
-                border: calc(0.1vw + 0.2vh) solid black;
-                width: calc(5vw + 4.5vh);
-            }
-            #checkbox1 {
-                height: calc(1vw + 2vh);
-                width: calc(1vw + 2vh);
-            }
-            #input_hour, #input_minute {
-                font-size: calc(3vw + 2vh);
-                width: calc(4vw + 2vh);
-                height: calc(3vw + 2vh);
-                background-color: rgb(255, 255, 255);
-                border: 0vw solid ;
-                margin-left: calc(0.5vw + 0.2vh);
-            }
-            #colon {
-                align-self: center;
-                font-size: calc(3vw + 2vh);
-                color: gray;    
-            }
-            #button_okAlarm {
-                font-size: calc(1vw + 1vh);
-                height: calc(2vw + 1vh);
-                width: calc(5vw + 2vh);
-                margin: calc(0.1vw + 0.1vh);
-                display: none;
-
-            }
-        </style>
-    </head>
-    <body>
-        <div class="main">
-            <div class="title">
-                <h1 id="title1">Settings</h1>
-                <h2 id="title2">Night Lamp V.1.0</h2>
-            </div>
-            <div class="alarm">
-                <h1 id="title_alarm">⏰Alarm</h1>
-                <hr id="garis1">
-                <div class="container_1">
-                    <input type="checkbox" id="checkbox1">
-                    <p id="title_alarm">Alarm 1</p>
-                </div>
-                <div class="container_2">
-                    <input type="number" value="00" id="input_hour" max="24" min="0" disabled>
-                    <h1 id="colon">:</h1>
-                    <input type="number" value="00" id="input_minute" max="60" min="0" disabled>
-                </div>
-                <button id="button_okAlarm">OK</button>
-            </div>
-        </div>
-        <script>
-            document.getElementById('checkbox1').addEventListener('change', function(){
-                var inputH = document.getElementById("input_hour");
-                var inputM = document.getElementById("input_minute");
-                var colon = document.getElementById("colon");
-                var button_okAlarm = document.getElementById("button_okAlarm");
-
-                if (document.getElementById('checkbox1').checked) {
-                    button_okAlarm.style.display = 'block';
-                    colon.style.color = "black"
-                    inputH.disabled = false;
-                    inputH.value = '00'; 
-                    inputM.disabled = false;
-                    inputM.value = '00'; 
-                } else {
-                    button_okAlarm.style.display = 'none';
-                    colon.style.color = "gray"
-                    inputH.disabled = true;
-                    inputH.value = '00';
-                    inputM.disabled = true;
-                    inputM.value = '00';  
-                }
             });
-        </script>
-    </body>
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #title1 {
+            font-size: calc(5.2vw + 1.2vh);
+            font-weight: 800;
+            margin: calc(1vw + 1.2vh);
+            margin-top: 0vw;
+            margin-bottom: calc(0.4vw + 1vh);
+        }
+
+        #title2 {
+            font-size: calc(1.2vw + 1.2vh);
+            font-style: italic;
+            margin: calc(1vw + 1.2vh);
+            margin-top: 0vw;
+        }
+
+        .alarm,
+        .warna,
+        .preset {
+            border: calc(0.05vw + 0.1vh) solid black;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .warna,
+        .preset {
+            margin-top: calc(2vw + 1vh);
+        }
+
+        #title_alarm,
+        #title_warna,
+        #title_preset {
+            font-size: calc(1.2vw + 1.2vh);
+            margin: calc(0.3vw + 0.3vh);
+            margin-bottom: 0.4vw;
+        }
+
+        #title_custom {
+            font-size: calc(1vw + 1vh);
+            margin: calc(0.3vw + 0.3vh);
+        }
+
+        .container_1,
+        .container_2,
+        .container_3,
+        .container_4,
+        .container_5 {
+            display: flex;
+            align-items: center;
+        }
+
+        .container_2 {
+            justify-items: center;
+            height: calc(5.2vw + 1.2vh);
+            margin: calc(0.3vw + 1.2vh);
+        }
+
+        .container_5 {
+            flex-direction: row;
+            align-items: start;
+            display: none;
+        }
+        #garis1,
+        #garis2,
+        #garis3 {
+            margin: 0vh;
+            margin-bottom: calc(1.2vw + 1.2vh);
+            border: calc(0.1vw + 0.2vh) solid black;
+            width: calc(6.2vw + 4.7vh);
+        }
+
+        #garis2,
+        #garis3 {
+            width: calc(13vw + 4.7vh);
+        }
+
+        #checkbox1,
+        #checkbox2,
+        #checkbox3,
+        #checkbox4,
+        #checkbox5 {
+            height: calc(1.2vw + 2.2vh);
+            width: calc(1.2vw + 2.2vh);
+        }
+
+        #input_alarm_h,  
+        #input_alarm_m {
+            height: calc(2.5vw + 2vh);
+            width: calc(2vw + 3vh);
+            font-size: calc(1.2vw + 0.5vh);
+        }
+
+        #colon {
+            font-size: calc(2vw + 1.2vh);
+            font-weight: 600;
+            color: gray;
+        }
+
+        #button_okAlarm,
+        #button_okColor,
+        #button_okPreset {
+            font-size: calc(1vw + 1.2vh);
+            height: calc(1.5vw + 1.2vh);
+            width: calc(4.2vw + 2.2vh);
+            margin: calc(0.3vw + 0.3vh);
+            display: none;
+        }
+
+        #button_okColor,
+        #button_okPreset {
+            display: block;
+            margin-top: 1.2vw;
+        }
+
+        #label_warna {
+            font-size: calc(1vw + 1.2vh);
+        }
+
+        #color_pick {
+            height: calc(1.2vw + 2.2vh);
+            width: calc(2vw + 2.2vh);
+        }
+
+        .led_container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .custom_button {
+            appearance: none;
+            -webkit-appearance: none;
+            height: calc(1.2vw + 2.2vh);
+            width: calc(2.2vw + 2.2vh);
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.2vw;
+        }
+       .custom_button:checked {
+            background-color: #0274ee;
+            border-color: #0274ee;
+            position: relative;
+        }
+
+        #container_b {
+            display: flex;
+            flex-direction: column;
+            gap: calc(0.15vw + 0.1vh);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="title">
+            <h1 id="title1">Settings</h1>
+            <h2 id="title2">Night Lamp V.1.0</h2>
+        </div>
+        <div class="alarm">
+            <h1 id="title_alarm">⏰Alarm</h1>
+            <hr id="garis1">
+            <div class="container_1">
+                <input type="checkbox" id="checkbox1">
+                <p id="title_alarm">Alarm 1</p>
+            </div>
+            <div class="container_2">
+                <select id="input_alarm_h" disabled="true">
+                    <option value="00" >00</option>
+                    <option value="01" >01</option>
+                    <option value="02" >02</option>
+                    <option value="03" >03</option>
+                    <option value="04" >04</option>
+                    <option value="05" >05</option>
+                    <option value="06" >06</option>
+                    <option value="07" >07</option>
+                    <option value="08" >08</option>
+                    <option value="09" >09</option>
+                    <option value="10" >10</option>
+                    <option value="11" >11</option>
+                    <option value="12" >12</option>
+                    <option value="13" >13</option>
+                    <option value="14" >14</option>
+                    <option value="15" >15</option>
+                    <option value="16" >16</option>
+                    <option value="17" >17</option>
+                    <option value="18" >18</option>
+                    <option value="19" >19</option>
+                    <option value="20" >20</option>
+                    <option value="21" >21</option>
+                    <option value="22" >22</option>
+                    <option value="23" >23</option>
+                    <option value="24" >24</option>
+                </select>
+                <p id="colon">:</p>
+                <select id="input_alarm_m" disabled="true">
+                    <option value="00" >00</option>
+                    <option value="01" >01</option>
+                    <option value="02" >02</option>
+                    <option value="03" >03</option>
+                    <option value="04" >04</option>
+                    <option value="05" >05</option>
+                    <option value="06" >06</option>
+                    <option value="07" >07</option>
+                    <option value="08" >08</option>
+                    <option value="09" >09</option>
+                    <option value="10" >10</option>
+                    <option value="11" >11</option>
+                    <option value="12" >12</option>
+                    <option value="13" >13</option>
+                    <option value="14" >14</option>
+                    <option value="15" >15</option>
+                    <option value="16" >16</option>
+                    <option value="17" >17</option>
+                    <option value="18" >18</option>
+                    <option value="19" >19</option>
+                    <option value="20" >20</option>
+                    <option value="21" >21</option>
+                    <option value="22" >22</option>
+                    <option value="23" >23</option>
+                    <option value="24" >24</option>
+                    <option value="00" >25</option>
+                    <option value="01" >26</option>
+                    <option value="02" >27</option>
+                    <option value="03" >28</option>
+                    <option value="04" >29</option>
+                    <option value="05" >30</option>
+                    <option value="06" >31</option>
+                    <option value="07" >32</option>
+                    <option value="08" >33</option>
+                    <option value="09" >34</option>
+                    <option value="10" >35</option>
+                    <option value="11" >36</option>
+                    <option value="12" >37</option>
+                    <option value="13" >38</option>
+                    <option value="14" >39</option>
+                    <option value="15" >40</option>
+                    <option value="16" >41</option>
+                    <option value="17" >42</option>
+                    <option value="18" >43</option>
+                    <option value="19" >44</option>
+                    <option value="20" >45</option>
+                    <option value="21" >46</option>
+                    <option value="22" >47</option>
+                    <option value="23" >48</option>
+                    <option value="24" >49</option>
+                    <option value="24" >50</option>
+                    <option value="24" >51</option>
+                    <option value="24" >52</option>
+                    <option value="24" >53</option>
+                    <option value="24" >54</option>
+                    <option value="24" >55</option>
+                    <option value="24" >56</option>
+                    <option value="24" >57</option>
+                    <option value="24" >58</option>
+                    <option value="24" >59</option>
+                    <option value="24" >60</option>
+                </select>
+            </div>
+            <button id="button_okAlarm">OK</button>
+        </div>
+
+        <div class="warna">
+            <h1 id="title_warna">🎨Warna Lampu</h1>
+            <hr id="garis2">
+            <div class="container_3">
+                <label id="label_warna">Pilih Warna Lampu :</label>
+                <input type="color" id="color_pick">
+            </div>
+            <button id="button_okColor">OK</button>
+        </div>
+
+        <div class="preset">
+            <h1 id="title_preset">🔺Preset Lampu</h1>
+            <hr id="garis3">
+            <div class="container_4">
+                <input type="checkbox" id="checkbox2"> 
+                <p id="title_preset">Preset 1</p>
+                <input type="checkbox" id="checkbox3"> 
+                <p id="title_preset">Preset 2</p>
+                <input type="checkbox" id="checkbox4"> 
+                <p id="title_preset">Preset 3</p>
+                <input type="checkbox" id="checkbox5"> 
+                <p id="title_preset">Custom</p>
+            </div>
+            <div class="container_5">
+                <div id="container_b">
+                    <p id="title_custom">LED A</p>
+                    <p id="title_custom">LED B</p>
+                    <p id="title_custom">LED C</p>
+                    <p id="title_custom">LED D</p>
+                    <p id="title_custom">LED E</p>
+                    <p id="title_custom">LED F</p>
+                    <p id="title_custom">LED G</p>
+                    <p id="title_custom">LED H</p>
+                    <p id="title_custom">LED I</p>
+                    <p id="title_custom">LED J</p>
+                </div>
+                <div id="container_a">
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="a1">
+                        <input type="checkbox" class="custom_button" id="a2">
+                        <input type="checkbox" class="custom_button" id="a3">
+                        <input type="checkbox" class="custom_button" id="a4">
+                        <input type="checkbox" class="custom_button" id="a5">
+                        <input type="checkbox" class="custom_button" id="a6">
+                        <input type="checkbox" class="custom_button" id="a7">
+                        <input type="checkbox" class="custom_button" id="a8">
+                        <input type="checkbox" class="custom_button" id="a9">
+                    </div>
+                    
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="b1">
+                        <input type="checkbox" class="custom_button" id="b2">
+                        <input type="checkbox" class="custom_button" id="b3">
+                        <input type="checkbox" class="custom_button" id="b4">
+                        <input type="checkbox" class="custom_button" id="b5">
+                        <input type="checkbox" class="custom_button" id="b6">
+                        <input type="checkbox" class="custom_button" id="b7">
+                        <input type="checkbox" class="custom_button" id="b8">
+                        <input type="checkbox" class="custom_button" id="b9">
+                    </div>
+                    
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="c1">
+                        <input type="checkbox" class="custom_button" id="c2">
+                        <input type="checkbox" class="custom_button" id="c3">
+                        <input type="checkbox" class="custom_button" id="c4">
+                        <input type="checkbox" class="custom_button" id="c5">
+                        <input type="checkbox" class="custom_button" id="c6">
+                        <input type="checkbox" class="custom_button" id="c7">
+                        <input type="checkbox" class="custom_button" id="c8">
+                        <input type="checkbox" class="custom_button" id="c9">
+                    </div>
+                    
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="d1">
+                        <input type="checkbox" class="custom_button" id="d2">
+                        <input type="checkbox" class="custom_button" id="d3">
+                        <input type="checkbox" class="custom_button" id="d4">
+                        <input type="checkbox" class="custom_button" id="d5">
+                        <input type="checkbox" class="custom_button" id="d6">
+                        <input type="checkbox" class="custom_button" id="d7">
+                        <input type="checkbox" class="custom_button" id="d8">
+                        <input type="checkbox" class="custom_button" id="d9">
+                    </div>
+                    
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="e1">
+                        <input type="checkbox" class="custom_button" id="e2">
+                        <input type="checkbox" class="custom_button" id="e3">
+                        <input type="checkbox" class="custom_button" id="e4">
+                        <input type="checkbox" class="custom_button" id="e5">
+                        <input type="checkbox" class="custom_button" id="e6">
+                        <input type="checkbox" class="custom_button" id="e7">
+                        <input type="checkbox" class="custom_button" id="e8">
+                        <input type="checkbox" class="custom_button" id="e9">
+                    </div>
+                    
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="f1">
+                        <input type="checkbox" class="custom_button" id="f2">
+                        <input type="checkbox" class="custom_button" id="f3">
+                        <input type="checkbox" class="custom_button" id="f4">
+                        <input type="checkbox" class="custom_button" id="f5">
+                        <input type="checkbox" class="custom_button" id="f6">
+                        <input type="checkbox" class="custom_button" id="f7">
+                        <input type="checkbox" class="custom_button" id="f8">
+                        <input type="checkbox" class="custom_button" id="f9">
+                    </div>
+                    
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="g1">
+                        <input type="checkbox" class="custom_button" id="g2">
+                        <input type="checkbox" class="custom_button" id="g3">
+                        <input type="checkbox" class="custom_button" id="g4">
+                        <input type="checkbox" class="custom_button" id="g5">
+                        <input type="checkbox" class="custom_button" id="g6">
+                        <input type="checkbox" class="custom_button" id="g7">
+                        <input type="checkbox" class="custom_button" id="g8">
+                        <input type="checkbox" class="custom_button" id="g9">
+                    </div>
+                    
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="h1">
+                        <input type="checkbox" class="custom_button" id="h2">
+                        <input type="checkbox" class="custom_button" id="h3">
+                        <input type="checkbox" class="custom_button" id="h4">
+                        <input type="checkbox" class="custom_button" id="h5">
+                        <input type="checkbox" class="custom_button" id="h6">
+                        <input type="checkbox" class="custom_button" id="h7">
+                        <input type="checkbox" class="custom_button" id="h8">
+                        <input type="checkbox" class="custom_button" id="h9">
+                    </div>
+                    
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="i1">
+                        <input type="checkbox" class="custom_button" id="i2">
+                        <input type="checkbox" class="custom_button" id="i3">
+                        <input type="checkbox" class="custom_button" id="i4">
+                        <input type="checkbox" class="custom_button" id="i5">
+                        <input type="checkbox" class="custom_button" id="i6">
+                        <input type="checkbox" class="custom_button" id="i7">
+                        <input type="checkbox" class="custom_button" id="i8">
+                        <input type="checkbox" class="custom_button" id="i9">
+                    </div>
+
+                    <div class="led_container">
+                        <input type="checkbox" class="custom_button" id="j1">
+                        <input type="checkbox" class="custom_button" id="j2">
+                        <input type="checkbox" class="custom_button" id="j3">
+                        <input type="checkbox" class="custom_button" id="j4">
+                        <input type="checkbox" class="custom_button" id="j5">
+                        <input type="checkbox" class="custom_button" id="j6">
+                        <input type="checkbox" class="custom_button" id="j7">
+                        <input type="checkbox" class="custom_button" id="j8">
+                        <input type="checkbox" class="custom_button" id="j9">
+                    </div>
+                </div>
+                
+            </div>
+            <button id="button_okPreset">OK</button>
+        </div>
+    </div>
+    <script>
+        var c2 = document.getElementById('checkbox2');
+        var c3 = document.getElementById('checkbox3');
+        var c4 = document.getElementById('checkbox4');
+        var c5 = document.getElementById('checkbox5');
+
+        document.getElementById('checkbox1').addEventListener('change', function () {
+            var input = document.getElementById("input_alarm_m");
+            var input2 = document.getElementById("input_alarm_h");
+            var colon = document.getElementById("colon").style;
+            var button_okAlarm = document.getElementById("button_okAlarm");
+
+            if (this.checked) {
+                button_okAlarm.style.display = 'block';
+                input.disabled = false;
+                input2.disabled = false;
+                colon.color = "black";
+            } else {
+                button_okAlarm.style.display = 'none';
+                input.disabled = true;
+                input2.disabled = true;
+                input.value = '00';
+                input2.value = '00';
+                colon.color = "gray";
+            }
+        });
+
+        c2.addEventListener('change', function(){
+            if (c2.checked == true) {
+                c3.checked = false;
+                c4.checked = false;
+                c5.checked = false;
+                document.getElementsByClassName('container_5')[0].style.display = "none"
+                document.getElementById('a1').checked = false;
+                document.getElementById('a2').checked = false;
+                document.getElementById('a3').checked = false;
+                document.getElementById('a4').checked = false;
+                document.getElementById('a5').checked = false;
+                document.getElementById('a6').checked = false;
+                document.getElementById('a7').checked = false;
+                document.getElementById('a8').checked = false;
+                document.getElementById('a9').checked = false;
+
+                document.getElementById('b1').checked = false;
+                document.getElementById('b2').checked = false;
+                document.getElementById('b3').checked = false;
+                document.getElementById('b4').checked = false;
+                document.getElementById('b5').checked = false;
+                document.getElementById('b6').checked = false;
+                document.getElementById('b7').checked = false;
+                document.getElementById('b8').checked = false;
+                document.getElementById('b9').checked = false;
+
+                document.getElementById('c1').checked = false;
+                document.getElementById('c2').checked = false;
+                document.getElementById('c3').checked = false;
+                document.getElementById('c4').checked = false;
+                document.getElementById('c5').checked = false;
+                document.getElementById('c6').checked = false;
+                document.getElementById('c7').checked = false;
+                document.getElementById('c8').checked = false;
+                document.getElementById('c9').checked = false;
+
+                document.getElementById('d1').checked = false;
+                document.getElementById('d2').checked = false;
+                document.getElementById('d3').checked = false;
+                document.getElementById('d4').checked = false;
+                document.getElementById('d5').checked = false;
+                document.getElementById('d6').checked = false;
+                document.getElementById('d7').checked = false;
+                document.getElementById('d8').checked = false;
+                document.getElementById('d9').checked = false;
+
+                document.getElementById('e1').checked = false;
+                document.getElementById('e2').checked = false;
+                document.getElementById('e3').checked = false;
+                document.getElementById('e4').checked = false;
+                document.getElementById('e5').checked = false;
+                document.getElementById('e6').checked = false;
+                document.getElementById('e7').checked = false;
+                document.getElementById('e8').checked = false;
+                document.getElementById('e9').checked = false;
+
+                document.getElementById('f1').checked = false;
+                document.getElementById('f2').checked = false;
+                document.getElementById('f3').checked = false;
+                document.getElementById('f4').checked = false;
+                document.getElementById('f5').checked = false;
+                document.getElementById('f6').checked = false;
+                document.getElementById('f7').checked = false;
+                document.getElementById('f8').checked = false;
+                document.getElementById('f9').checked = false;
+
+                document.getElementById('g1').checked = false;
+                document.getElementById('g2').checked = false;
+                document.getElementById('g3').checked = false;
+                document.getElementById('g4').checked = false;
+                document.getElementById('g5').checked = false;
+                document.getElementById('g6').checked = false;
+                document.getElementById('g7').checked = false;
+                document.getElementById('g8').checked = false;
+                document.getElementById('g9').checked = false;
+
+                document.getElementById('h1').checked = false;
+                document.getElementById('h2').checked = false;
+                document.getElementById('h3').checked = false;
+                document.getElementById('h4').checked = false;
+                document.getElementById('h5').checked = false;
+                document.getElementById('h6').checked = false;
+                document.getElementById('h7').checked = false;
+                document.getElementById('h8').checked = false;
+                document.getElementById('h9').checked = false;
+
+                document.getElementById('i1').checked = false;
+                document.getElementById('i2').checked = false;
+                document.getElementById('i3').checked = false;
+                document.getElementById('i4').checked = false;
+                document.getElementById('i5').checked = false;
+                document.getElementById('i6').checked = false;
+                document.getElementById('i7').checked = false;
+                document.getElementById('i8').checked = false;
+                document.getElementById('i9').checked = false;
+
+                document.getElementById('j1').checked = false;
+                document.getElementById('j2').checked = false;
+                document.getElementById('j3').checked = false;
+                document.getElementById('j4').checked = false;
+                document.getElementById('j5').checked = false;
+                document.getElementById('j6').checked = false;
+                document.getElementById('j7').checked = false;
+                document.getElementById('j8').checked = false;
+                document.getElementById('j9').checked = false;
+            }
+        });
+        c3.addEventListener('change', function(){
+            if (c3.checked == true) {
+                c2.checked = false;
+                c4.checked = false;
+                c5.checked = false;
+                document.getElementsByClassName('container_5')[0].style.display = "none"
+                document.getElementById('a1').checked = false;
+                document.getElementById('a2').checked = false;
+                document.getElementById('a3').checked = false;
+                document.getElementById('a4').checked = false;
+                document.getElementById('a5').checked = false;
+                document.getElementById('a6').checked = false;
+                document.getElementById('a7').checked = false;
+                document.getElementById('a8').checked = false;
+                document.getElementById('a9').checked = false;
+
+                document.getElementById('b1').checked = false;
+                document.getElementById('b2').checked = false;
+                document.getElementById('b3').checked = false;
+                document.getElementById('b4').checked = false;
+                document.getElementById('b5').checked = false;
+                document.getElementById('b6').checked = false;
+                document.getElementById('b7').checked = false;
+                document.getElementById('b8').checked = false;
+                document.getElementById('b9').checked = false;
+
+                document.getElementById('c1').checked = false;
+                document.getElementById('c2').checked = false;
+                document.getElementById('c3').checked = false;
+                document.getElementById('c4').checked = false;
+                document.getElementById('c5').checked = false;
+                document.getElementById('c6').checked = false;
+                document.getElementById('c7').checked = false;
+                document.getElementById('c8').checked = false;
+                document.getElementById('c9').checked = false;
+
+                document.getElementById('d1').checked = false;
+                document.getElementById('d2').checked = false;
+                document.getElementById('d3').checked = false;
+                document.getElementById('d4').checked = false;
+                document.getElementById('d5').checked = false;
+                document.getElementById('d6').checked = false;
+                document.getElementById('d7').checked = false;
+                document.getElementById('d8').checked = false;
+                document.getElementById('d9').checked = false;
+
+                document.getElementById('e1').checked = false;
+                document.getElementById('e2').checked = false;
+                document.getElementById('e3').checked = false;
+                document.getElementById('e4').checked = false;
+                document.getElementById('e5').checked = false;
+                document.getElementById('e6').checked = false;
+                document.getElementById('e7').checked = false;
+                document.getElementById('e8').checked = false;
+                document.getElementById('e9').checked = false;
+
+                document.getElementById('f1').checked = false;
+                document.getElementById('f2').checked = false;
+                document.getElementById('f3').checked = false;
+                document.getElementById('f4').checked = false;
+                document.getElementById('f5').checked = false;
+                document.getElementById('f6').checked = false;
+                document.getElementById('f7').checked = false;
+                document.getElementById('f8').checked = false;
+                document.getElementById('f9').checked = false;
+
+                document.getElementById('g1').checked = false;
+                document.getElementById('g2').checked = false;
+                document.getElementById('g3').checked = false;
+                document.getElementById('g4').checked = false;
+                document.getElementById('g5').checked = false;
+                document.getElementById('g6').checked = false;
+                document.getElementById('g7').checked = false;
+                document.getElementById('g8').checked = false;
+                document.getElementById('g9').checked = false;
+
+                document.getElementById('h1').checked = false;
+                document.getElementById('h2').checked = false;
+                document.getElementById('h3').checked = false;
+                document.getElementById('h4').checked = false;
+                document.getElementById('h5').checked = false;
+                document.getElementById('h6').checked = false;
+                document.getElementById('h7').checked = false;
+                document.getElementById('h8').checked = false;
+                document.getElementById('h9').checked = false;
+
+                document.getElementById('i1').checked = false;
+                document.getElementById('i2').checked = false;
+                document.getElementById('i3').checked = false;
+                document.getElementById('i4').checked = false;
+                document.getElementById('i5').checked = false;
+                document.getElementById('i6').checked = false;
+                document.getElementById('i7').checked = false;
+                document.getElementById('i8').checked = false;
+                document.getElementById('i9').checked = false;
+
+                document.getElementById('j1').checked = false;
+                document.getElementById('j2').checked = false;
+                document.getElementById('j3').checked = false;
+                document.getElementById('j4').checked = false;
+                document.getElementById('j5').checked = false;
+                document.getElementById('j6').checked = false;
+                document.getElementById('j7').checked = false;
+                document.getElementById('j8').checked = false;
+                document.getElementById('j9').checked = false;
+            }
+        });
+        c4.addEventListener('change', function(){
+            if (c4.checked == true) {
+                c3.checked = false;
+                c2.checked = false;
+                c5.checked = false;
+                document.getElementsByClassName('container_5')[0].style.display = "none"
+                document.getElementById('a1').checked = false;
+                document.getElementById('a2').checked = false;
+                document.getElementById('a3').checked = false;
+                document.getElementById('a4').checked = false;
+                document.getElementById('a5').checked = false;
+                document.getElementById('a6').checked = false;
+                document.getElementById('a7').checked = false;
+                document.getElementById('a8').checked = false;
+                document.getElementById('a9').checked = false;
+
+                document.getElementById('b1').checked = false;
+                document.getElementById('b2').checked = false;
+                document.getElementById('b3').checked = false;
+                document.getElementById('b4').checked = false;
+                document.getElementById('b5').checked = false;
+                document.getElementById('b6').checked = false;
+                document.getElementById('b7').checked = false;
+                document.getElementById('b8').checked = false;
+                document.getElementById('b9').checked = false;
+
+                document.getElementById('c1').checked = false;
+                document.getElementById('c2').checked = false;
+                document.getElementById('c3').checked = false;
+                document.getElementById('c4').checked = false;
+                document.getElementById('c5').checked = false;
+                document.getElementById('c6').checked = false;
+                document.getElementById('c7').checked = false;
+                document.getElementById('c8').checked = false;
+                document.getElementById('c9').checked = false;
+
+                document.getElementById('d1').checked = false;
+                document.getElementById('d2').checked = false;
+                document.getElementById('d3').checked = false;
+                document.getElementById('d4').checked = false;
+                document.getElementById('d5').checked = false;
+                document.getElementById('d6').checked = false;
+                document.getElementById('d7').checked = false;
+                document.getElementById('d8').checked = false;
+                document.getElementById('d9').checked = false;
+
+                document.getElementById('e1').checked = false;
+                document.getElementById('e2').checked = false;
+                document.getElementById('e3').checked = false;
+                document.getElementById('e4').checked = false;
+                document.getElementById('e5').checked = false;
+                document.getElementById('e6').checked = false;
+                document.getElementById('e7').checked = false;
+                document.getElementById('e8').checked = false;
+                document.getElementById('e9').checked = false;
+
+                document.getElementById('f1').checked = false;
+                document.getElementById('f2').checked = false;
+                document.getElementById('f3').checked = false;
+                document.getElementById('f4').checked = false;
+                document.getElementById('f5').checked = false;
+                document.getElementById('f6').checked = false;
+                document.getElementById('f7').checked = false;
+                document.getElementById('f8').checked = false;
+                document.getElementById('f9').checked = false;
+
+                document.getElementById('g1').checked = false;
+                document.getElementById('g2').checked = false;
+                document.getElementById('g3').checked = false;
+                document.getElementById('g4').checked = false;
+                document.getElementById('g5').checked = false;
+                document.getElementById('g6').checked = false;
+                document.getElementById('g7').checked = false;
+                document.getElementById('g8').checked = false;
+                document.getElementById('g9').checked = false;
+
+                document.getElementById('h1').checked = false;
+                document.getElementById('h2').checked = false;
+                document.getElementById('h3').checked = false;
+                document.getElementById('h4').checked = false;
+                document.getElementById('h5').checked = false;
+                document.getElementById('h6').checked = false;
+                document.getElementById('h7').checked = false;
+                document.getElementById('h8').checked = false;
+                document.getElementById('h9').checked = false;
+
+                document.getElementById('i1').checked = false;
+                document.getElementById('i2').checked = false;
+                document.getElementById('i3').checked = false;
+                document.getElementById('i4').checked = false;
+                document.getElementById('i5').checked = false;
+                document.getElementById('i6').checked = false;
+                document.getElementById('i7').checked = false;
+                document.getElementById('i8').checked = false;
+                document.getElementById('i9').checked = false;
+
+                document.getElementById('j1').checked = false;
+                document.getElementById('j2').checked = false;
+                document.getElementById('j3').checked = false;
+                document.getElementById('j4').checked = false;
+                document.getElementById('j5').checked = false;
+                document.getElementById('j6').checked = false;
+                document.getElementById('j7').checked = false;
+                document.getElementById('j8').checked = false;
+                document.getElementById('j9').checked = false;
+            }
+        });
+        c5.addEventListener('change', function(){
+            if (c5.checked == true) {
+                c3.checked = false;
+                c4.checked = false;
+                c2.checked = false;
+                document.getElementsByClassName('container_5')[0].style.display = "flex"
+            } else {
+                document.getElementsByClassName('container_5')[0].style.display = "none"
+                document.getElementById('a1').checked = false;
+                document.getElementById('a2').checked = false;
+                document.getElementById('a3').checked = false;
+                document.getElementById('a4').checked = false;
+                document.getElementById('a5').checked = false;
+                document.getElementById('a6').checked = false;
+                document.getElementById('a7').checked = false;
+                document.getElementById('a8').checked = false;
+                document.getElementById('a9').checked = false;
+
+                document.getElementById('b1').checked = false;
+                document.getElementById('b2').checked = false;
+                document.getElementById('b3').checked = false;
+                document.getElementById('b4').checked = false;
+                document.getElementById('b5').checked = false;
+                document.getElementById('b6').checked = false;
+                document.getElementById('b7').checked = false;
+                document.getElementById('b8').checked = false;
+                document.getElementById('b9').checked = false;
+
+                document.getElementById('c1').checked = false;
+                document.getElementById('c2').checked = false;
+                document.getElementById('c3').checked = false;
+                document.getElementById('c4').checked = false;
+                document.getElementById('c5').checked = false;
+                document.getElementById('c6').checked = false;
+                document.getElementById('c7').checked = false;
+                document.getElementById('c8').checked = false;
+                document.getElementById('c9').checked = false;
+
+                document.getElementById('d1').checked = false;
+                document.getElementById('d2').checked = false;
+                document.getElementById('d3').checked = false;
+                document.getElementById('d4').checked = false;
+                document.getElementById('d5').checked = false;
+                document.getElementById('d6').checked = false;
+                document.getElementById('d7').checked = false;
+                document.getElementById('d8').checked = false;
+                document.getElementById('d9').checked = false;
+
+                document.getElementById('e1').checked = false;
+                document.getElementById('e2').checked = false;
+                document.getElementById('e3').checked = false;
+                document.getElementById('e4').checked = false;
+                document.getElementById('e5').checked = false;
+                document.getElementById('e6').checked = false;
+                document.getElementById('e7').checked = false;
+                document.getElementById('e8').checked = false;
+                document.getElementById('e9').checked = false;
+
+                document.getElementById('f1').checked = false;
+                document.getElementById('f2').checked = false;
+                document.getElementById('f3').checked = false;
+                document.getElementById('f4').checked = false;
+                document.getElementById('f5').checked = false;
+                document.getElementById('f6').checked = false;
+                document.getElementById('f7').checked = false;
+                document.getElementById('f8').checked = false;
+                document.getElementById('f9').checked = false;
+
+                document.getElementById('g1').checked = false;
+                document.getElementById('g2').checked = false;
+                document.getElementById('g3').checked = false;
+                document.getElementById('g4').checked = false;
+                document.getElementById('g5').checked = false;
+                document.getElementById('g6').checked = false;
+                document.getElementById('g7').checked = false;
+                document.getElementById('g8').checked = false;
+                document.getElementById('g9').checked = false;
+
+                document.getElementById('h1').checked = false;
+                document.getElementById('h2').checked = false;
+                document.getElementById('h3').checked = false;
+                document.getElementById('h4').checked = false;
+                document.getElementById('h5').checked = false;
+                document.getElementById('h6').checked = false;
+                document.getElementById('h7').checked = false;
+                document.getElementById('h8').checked = false;
+                document.getElementById('h9').checked = false;
+
+                document.getElementById('i1').checked = false;
+                document.getElementById('i2').checked = false;
+                document.getElementById('i3').checked = false;
+                document.getElementById('i4').checked = false;
+                document.getElementById('i5').checked = false;
+                document.getElementById('i6').checked = false;
+                document.getElementById('i7').checked = false;
+                document.getElementById('i8').checked = false;
+                document.getElementById('i9').checked = false;
+
+                document.getElementById('j1').checked = false;
+                document.getElementById('j2').checked = false;
+                document.getElementById('j3').checked = false;
+                document.getElementById('j4').checked = false;
+                document.getElementById('j5').checked = false;
+                document.getElementById('j6').checked = false;
+                document.getElementById('j7').checked = false;
+                document.getElementById('j8').checked = false;
+                document.getElementById('j9').checked = false;
+
+            }
+        });
+    </script>
+</body>
 </html>
