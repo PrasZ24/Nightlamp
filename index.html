@@ -324,14 +324,14 @@
         console.log(waktu_jam + " : " + waktu_menit);
 
         var xhttp_w = new XMLHttpRequest();
-        xhttp_w.open("POST", "/" + "waktu_browser", true);
+        xhttp_w.open("POST", "http://192.168.4.1/" + "waktu_browser", true);
         xhttp_w.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhttp_w.send("waktu=" +waktu_jam+","+waktu_menit);
 
         //fungsi kirim data
         function alarm_sendData() {
             var xhttp = new XMLHttpRequest();
-            xhttp.open("POST", "/" + "alarm", true);
+            xhttp.open("POST", "http://192.168.4.1/" + "alarm", true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhttp.send("alarm_value=" +document.getElementById("input_alarm_h").value + "," + document.getElementById("input_alarm_m").value);
         }
@@ -354,7 +354,7 @@
 
         function preset_sendData() {
             var xhttp = new XMLHttpRequest();
-            xhttp.open("POST", "/" + "preset", true);
+            xhttp.open("POST", "http://192.168.4.1/" + "preset", true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             if(c2.checked){
                 xhttp.send("preset_value=" + "1");
